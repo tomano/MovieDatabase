@@ -91,7 +91,26 @@ class MovieStore {
     }
     
     
-    static func getActeurs() {
-    
+    static func getActors(idMovie:String, completionHandler: @escaping ([Movie]) -> Void) {
+
+        var urlComponents = baseUrlComponents
+        urlComponents?.path.append("movie/")
+        urlComponents?.path.append(idMovie)
+        urlComponents?.path.append("/credits")
+        urlComponents?.queryItems = [apiKey]
+        print(urlComponents!)
+        
+        URLSession.shared.dataTask(with: urlComponents!.url!) { data, _, _ in
+        if let data = data {
+            do {
+               let jsonDecoder = JSONDecoder()
+               jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                let movieResponse = try jsonDecoder.decode(MovieResponse.self, from: data)
+                    completionHandler(movieResponse.results)
+                } catch {
+                    completionHandler([Movie]())
+                }
+            }
+        }
     }
 }
