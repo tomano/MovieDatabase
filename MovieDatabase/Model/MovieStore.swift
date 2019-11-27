@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class MovieStore {
-    static let apiKey = URLQueryItem(name: "api_key", value: "XXXXXXXXXXX")
+    static let apiKey = URLQueryItem(name: "api_key", value: "7a39a40c3ed9fc5cd7b30ac4d42be33f")
     static let language = URLQueryItem(name: "language", value: "fr")
     static let baseUrlComponents = URLComponents(string: "https://api.themoviedb.org/3/")
     static var currentTask: URLSessionDataTask?
@@ -88,5 +88,10 @@ class MovieStore {
         urlComponents?.queryItems = [apiKey, language, query]
         
         getMovies(url: urlComponents!.url!, completionHandler: completionHandler)
+    }
+    
+    
+    static func getActeurs() {
+    
     }
 }

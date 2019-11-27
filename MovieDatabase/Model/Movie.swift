@@ -15,6 +15,8 @@ struct Movie {
     var backdropPath: String?
     var releaseDate: Date?
     var voteAverage: Double
+    var idMovie : Int
+    var idActeur: Int
 }
 
 struct MovieResponse {
