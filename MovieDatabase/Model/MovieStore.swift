@@ -91,7 +91,7 @@ class MovieStore {
     }
     
     
-    static func getActors(idMovie:String, completionHandler: @escaping ([Movie]) -> Void) {
+    static func getActors(idMovie:String, completionHandler: @escaping ([Actor]) -> Void) {
 
         var urlComponents = baseUrlComponents
         urlComponents?.path.append("movie/")
@@ -103,14 +103,14 @@ class MovieStore {
         URLSession.shared.dataTask(with: urlComponents!.url!) { data, _, _ in
         if let data = data {
             do {
-               let jsonDecoder = JSONDecoder()
+                let jsonDecoder = JSONDecoder()
                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                let movieResponse = try jsonDecoder.decode(MovieResponse.self, from: data)
-                    completionHandler(movieResponse.results)
+                let actorResponse = try jsonDecoder.decode(ActorResponse.self, from: data)
+                    completionHandler(actorResponse.cast)
                 } catch {
-                    completionHandler([Movie]())
+                    //completionHandler([Movie]())
                 }
             }
-        }
+        }.resume()
     }
 }
