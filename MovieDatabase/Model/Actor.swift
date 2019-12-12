@@ -12,7 +12,7 @@ import Foundation
 struct Actor {
     var name : String
     var character: String
-    var profilePath: String
+    var profilePath: String?
 }
 
 
