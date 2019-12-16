@@ -11,12 +11,16 @@ import UIKit
 class MovieDetailViewController: UIViewController {
     // MARK: - Variables
     
-    var movie: Movie?
+
     
     @IBOutlet var releaseDate: UILabel!
     @IBOutlet var averageRate: UILabel!
     @IBOutlet var topImageView: UIImageView!
     @IBOutlet var overview: UILabel!
+    @IBOutlet weak var actorCollectionView: UICollectionView!
+
+    var movie: Movie?
+    var actors: [Actor]?
     
     // MARK: - Lifecycle
     
@@ -44,7 +48,45 @@ class MovieDetailViewController: UIViewController {
         }
         
         MovieStore.getActors(idMovie: String(movie.id)){
-            (cast) in print(cast)
+            (cast) in print(cast[0].name)
+            self.actors = cast
+                
         }
+    }
+    
+}
+
+
+extension MovieDetailViewController: UICollectionViewDataSource {
+
+    
+    // MARK: - UITableViewDatasource
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return actors?.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+                
+        let cell = actorCollectionView.dequeueReusableCell(withReuseIdentifier: "cellule", for: indexPath) as! ActorCollectionViewCell
+            
+        let actor = actors![indexPath.row]
+        cell.actorName.text = actor.name
+        cell.actorCharacter.text = actor.character
+        //cell.actorImage = nil
+        
+        //if actor.profilePath != nil {
+            MovieStore.getImage(posterPath: actor.profilePath! ) { path, image in
+                if self.actors!.count > indexPath.row {
+                    let newActor = self.actors![indexPath.row]
+                    if path == newActor.profilePath {
+                        cell.actorImage.image = image
+                    } else {
+                        cell.actorImage.image = nil
+                    }
+                }
+            }
+        //}
+        return cell
     }
 }
